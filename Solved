@@ -1,0 +1,60 @@
+Here is a repository description for the Wisecow project on GitHub:
+
+---
+
+### Wisecow Application
+
+This repository contains the Wisecow application, containerized and deployed on a Kubernetes environment with secure TLS communication, and automated using GitHub Actions for Continuous Integration and Deployment (CI/CD).
+
+#### Objective
+The objective of this project is to containerize the Wisecow application and deploy it on Kubernetes, ensuring secure TLS communication and automating the deployment process using GitHub Actions.
+
+#### Repository Structure
+- `app.py`: The main application code.
+- `requirements.txt`: Dependencies for the Wisecow application.
+- `Dockerfile`: Instructions to build the Docker image of the Wisecow application.
+- `deployment.yaml`: Kubernetes manifest file for deploying the Wisecow application.
+- `service.yaml`: Kubernetes manifest file for exposing the Wisecow application as a service.
+- `ingress.yaml`: Kubernetes manifest file for securing the application with TLS using Cert-Manager and Let's Encrypt.
+- `.github/workflows/ci-cd.yml`: GitHub Actions workflow for automating the build, push, and deployment of the Wisecow application.
+
+#### Features
+- **Dockerization**: The application is containerized using Docker.
+- **Kubernetes Deployment**: Kubernetes manifests are provided to deploy the application.
+- **TLS Communication**: The application is secured with TLS using Cert-Manager and Let's Encrypt.
+- **CI/CD Pipeline**: GitHub Actions workflow automates the build and deployment process.
+
+#### How to Use
+1. **Clone the repository**:
+    ```sh
+    git clone https://github.com/nyrahul/wisecow.git
+    cd wisecow
+    ```
+
+2. **Build and Run Docker Container**:
+    ```sh
+    docker build -t wisecow-app .
+    docker run -p 4000:80 wisecow-app
+    ```
+
+3. **Deploy to Kubernetes**:
+    ```sh
+    kubectl apply -f deployment.yaml
+    kubectl apply -f service.yaml
+    kubectl apply -f ingress.yaml
+    ```
+
+4. **Configure CI/CD**:
+    - Set up GitHub secrets for Docker Hub credentials and Kubernetes config:
+        - `DOCKER_HUB_USERNAME`
+        - `DOCKER_HUB_ACCESS_TOKEN`
+        - `KUBE_CONFIG_DATA`
+
+    - Push changes to the `main` branch to trigger the GitHub Actions workflow.
+
+#### End Goal
+The successful containerization and deployment of the Wisecow application to a Kubernetes environment with an automated CI/CD pipeline, secured with TLS communication.
+
+---
+
+Feel free to customize this description based on any additional details or specific instructions related to your project.
