@@ -1,0 +1,109 @@
+I will address the following two objectives using Python:
+1. System Health Monitoring Script
+2. Automated Backup Solution
+
+### 1. System Health Monitoring Script
+
+Here is a Python script that monitors the health of a Linux system by checking CPU usage, memory usage, disk space, and running processes. If any of these metrics exceed predefined thresholds, it sends an alert to the console and logs the information to a file.
+
+```python
+import psutil
+import logging
+from datetime import datetime
+import time
+
+# Set up logging
+logging.basicConfig(filename='system_health.log', level=logging.INFO, format='%(asctime)s - %(message)s')
+
+# Thresholds
+CPU_THRESHOLD = 80  # in percentage
+MEMORY_THRESHOLD = 80  # in percentage
+DISK_THRESHOLD = 80  # in percentage
+PROCESS_THRESHOLD = 200  # max number of processes
+
+def check_cpu_usage():
+    usage = psutil.cpu_percent(interval=1)
+    if usage > CPU_THRESHOLD:
+        alert(f"High CPU usage detected: {usage}%")
+    return usage
+
+def check_memory_usage():
+    usage = psutil.virtual_memory().percent
+    if usage > MEMORY_THRESHOLD:
+        alert(f"High memory usage detected: {usage}%")
+    return usage
+
+def check_disk_usage():
+    usage = psutil.disk_usage('/').percent
+    if usage > DISK_THRESHOLD:
+        alert(f"High disk usage detected: {usage}%")
+    return usage
+
+def check_running_processes():
+    count = len(psutil.pids())
+    if count > PROCESS_THRESHOLD:
+        alert(f"High number of running processes detected: {count}")
+    return count
+
+def alert(message):
+    print(message)
+    logging.info(message)
+
+def main():
+    while True:
+        cpu_usage = check_cpu_usage()
+        memory_usage = check_memory_usage()
+        disk_usage = check_disk_usage()
+        process_count = check_running_processes()
+        
+        print(f"CPU Usage: {cpu_usage}%")
+        print(f"Memory Usage: {memory_usage}%")
+        print(f"Disk Usage: {disk_usage}%")
+        print(f"Running Processes: {process_count}")
+        
+        # Sleep for a minute before next check
+        time.sleep(60)
+
+if __name__ == "__main__":
+    main()
+```
+
+### 2. Automated Backup Solution
+
+Here is a Python script that automates the backup of a specified directory to a remote server using SCP (Secure Copy Protocol). The script provides a report on the success or failure of the backup operation.
+
+```python
+import os
+import subprocess
+import logging
+from datetime import datetime
+
+# Set up logging
+logging.basicConfig(filename='backup.log', level=logging.INFO, format='%(asctime)s - %(message)s')
+
+# Configuration
+SOURCE_DIRECTORY = '/path/to/source/directory'
+REMOTE_SERVER = 'user@remote_server:/path/to/backup/directory'
+LOG_FILE = 'backup.log'
+
+def backup_directory(source, destination):
+    try:
+        result = subprocess.run(['scp', '-r', source, destination], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        logging.info(f"Backup successful: {result.stdout.decode('utf-8')}")
+        print("Backup successful")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Backup failed: {e.stderr.decode('utf-8')}")
+        print("Backup failed")
+
+def main():
+    backup_directory(SOURCE_DIRECTORY, REMOTE_SERVER)
+
+if __name__ == "__main__":
+    main()
+```
+
+### Summary
+1. **System Health Monitoring Script**: This script continuously monitors the CPU usage, memory usage, disk space, and running processes, logging and alerting if any metric exceeds predefined thresholds.
+2. **Automated Backup Solution**: This script automates the backup of a specified directory to a remote server using SCP and logs the success or failure of the operation.
+
+Make sure to adjust the paths and server details in both scripts to match your specific requirements. Additionally, ensure you have the required permissions and that the necessary tools (`psutil` and `scp`) are installed and configured on your system.
